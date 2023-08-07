@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 리스트</title>
+    <style>
+        .write-button {
+             padding: 5px 10px;
+             background-color: #007bff;
+             color: #fff;
+             border: none;
+             border-radius: 3px;
+             text-decoration: none;
+        }
+
+        .write-button:hover {
+             background-color: #0056b3;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ccc;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagination a, .pagination strong {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            color: #555;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .pagination strong {
+            color: red;
+            background-color: #f0f0f0;
+        }
+
+        .search-form {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-form input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .search-form button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>게시물 리스트</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>글번호</th>
+            <th>제목</th>
+            <a href="/board/write" class="write-button">글쓰기</a>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${list}">
+            <td th:text="${board.id}"></td>
+            <td>
+                <a th:text="${board.title}" th:href="@{/board/view/{id}(id=${board.id})}"></a>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+            <strong th:if="${page == nowPage}" th:text="${page}"></strong>
+        </th:block>
+    </div>
+
+    <form class="search-form" th:action="@{/board/list}" method="get">
+        <input type="text" name="searchKeyword" placeholder="검색어를 입력하세요">
+        <button type="submit">검색</button>
+    </form>
+</div>
+</body>
+</html>

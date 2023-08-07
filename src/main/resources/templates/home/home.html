@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>홈 화면</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .header a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .content {
+            margin: 20px;
+        }
+
+        .board-item {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="/">홈 화면</a>
+    <a href="/board/list">게시판</a>
+</div>
+
+<div class="content">
+    <h2>게시판 제목 리스트</h2>
+    <div class="board-item" th:each="board : ${boardList}">
+        <a th:href="@{/board/view/{id}(id=${board.id})}" th:text="${board.title}"></a>
+    </div>
+</div>
+</body>
+</html>
